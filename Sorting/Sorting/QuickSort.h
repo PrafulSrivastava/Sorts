@@ -23,7 +23,7 @@ public:
 		return { {pivot_pos, j},{j + 1,extent} };
 	}
 
-	static void sort(vector<T>& v) {
+	static void sort_iterative(vector<T>& v) {
 		stack<pair<int, int>> st;
 		st.push(pair<int, int>(0, v.size()));
 		while (!st.empty()) {
@@ -37,5 +37,27 @@ public:
 				st.push(start_end.second);
 			}
 		}
+	}
+	static void sort_recursive(vector<T>& v, int pos, int extent) {
+		if (pos < extent) {
+			int i = pos;
+			int j = extent - 1;
+			while (i <= j) {
+				if (v[i] > v[pos]) {
+					if (v[j] < v[pos]) {
+						Utility<T>::swap(v[i], v[j]);
+					}
+					else
+						j--;
+				}
+				else
+					i++;
+			}
+			Utility<T>::swap(v[pos], v[j]);
+			sort_recursive(v, pos, j);
+			sort_recursive(v, j + 1, extent);
+		}
+		else
+			return;
 	}
 };
